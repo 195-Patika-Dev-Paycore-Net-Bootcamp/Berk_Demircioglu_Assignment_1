@@ -1,7 +1,6 @@
-﻿using CompoundInterestCalculatorWebAPI.BalanceCalculations.CalculateBalancewithCompoundInterest;
-using CompoundInterestCalculatorWebAPI.Models;
+﻿using CompoundInterestCalculatorWebAPI.Models;
+using CompoundInterestCalculatorWebAPI.TotalBalanceCalculations.CalculateTotalBalancewithCompoundInterest;
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -33,14 +32,17 @@ namespace CompoundInterestCalculatorWebAPI.Controllers
                 command.Model = compoundInterest; /* Parameters taken from query by "compoundInterest" instance are transferred
                                                to the "Model", which is a property of the "CompoundInterestCommand" class. */
                 
-                CompundInterestCommandValidator validator = new CompundInterestCommandValidator();
-                validator.ValidateAndThrow(command);
+                CompundInterestCommandValidator validator = new CompundInterestCommandValidator(); // An instance was created from our CompundInterestCommandValidator class. 
+                
+                validator.ValidateAndThrow(command); //Validation and error throwing were done with the help of fluent validation library.
+
                 var result = command.Calculate(); //Mathematical calculations were carried out.
+                
                 return Ok(result); //The result is returned with an http success response.
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex.Message); // If any error occurs, program will send 400 HTTP response status code.
             }  
         }
 
